@@ -1,21 +1,15 @@
-import { expect as expectCDK, haveResource } from '@aws-cdk/assert';
-import * as cdk from '@aws-cdk/core';
-import * as Isolate from '../lib/isolate-stack';
+import { expect as expectCDK, matchTemplate, MatchStyle } from '@aws-cdk/assert';
 
-test('SQS Queue Created', () => {
+import * as cdk from '@aws-cdk/core';
+
+import IsolatedNetworkExperiment = require('../lib/isolate-stack');
+
+test('Empty Stack', () => {
     const app = new cdk.App();
     // WHEN
-    const stack = new Isolate.IsolateStack(app, 'MyTestStack');
+    const stack = new IsolatedNetworkExperiment.IsolateStack(app, 'MyTestStack');
     // THEN
-    expectCDK(stack).to(haveResource("AWS::SQS::Queue",{
-      VisibilityTimeout: 300
-    }));
-});
-
-test('SNS Topic Created', () => {
-  const app = new cdk.App();
-  // WHEN
-  const stack = new Isolate.IsolateStack(app, 'MyTestStack');
-  // THEN
-  expectCDK(stack).to(haveResource("AWS::SNS::Topic"));
+    expectCDK(stack).to(matchTemplate({
+      "Resources": {}
+    }, MatchStyle.EXACT))
 });
